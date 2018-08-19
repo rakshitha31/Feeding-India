@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.MakeAdminActivity"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/make_admin_description"
+        android:textSize="20sp"
+        android:textColor="@color/sienna"
+        android:textAlignment="viewStart"
+        android:layout_margin="@dimen/margin_five_dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="@string/make_admin_email"
+        android:id="@+id/emailEditText"
+        android:layout_marginRight="@dimen/margin_five_dp"
+        android:layout_marginLeft="@dimen/margin_five_dp"
+        android:padding="@dimen/margin_five_dp"
+        android:background="@drawable/edit_text_border"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?attr/borderlessButtonStyle"
+        android:text="@string/make_admin"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"
+        android:onClick="onClickMakeAdmin"
+        android:layout_marginRight="@dimen/margin_five_dp"
+        android:layout_marginLeft="@dimen/margin_five_dp"
+        android:layout_marginTop="@dimen/margin_ten_dp" />
+
+</LinearLayout>

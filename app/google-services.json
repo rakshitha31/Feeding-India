@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "950200136236",
+    "firebase_url": "https://friendly-chat-navada.firebaseio.com",
+    "project_id": "friendly-chat-navada",
+    "storage_bucket": "friendly-chat-navada.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950200136236:android:36d60da92333eaae",
+        "android_client_info": {
+          "package_name": "com.example.navada.feedingindia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950200136236-2cj9js7p6thr0t9ttmj9ebcj017os0vf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.navada.feedingindia",
+            "certificate_hash": "0b05961972e2dd65d555bf2c9c99b422c41e73f6"
+          }
+        },
+        {
+          "client_id": "950200136236-3umakndovap0usq5eeg9l1b7qjm0s4h0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdVaPmi-DQmzO3IpJklUzS8RKmA9oWRmM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950200136236-3umakndovap0usq5eeg9l1b7qjm0s4h0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,168 @@
+<resources>
+
+    <string name="app_name">Feeding India</string>
+
+    <!-- SignInActivity -->
+    <string name="username">USERNAME</string>
+    <string name="enter_username">Enter username</string>
+    <string name="password">PASSWORD</string>
+    <string name="enter_password">Enter password</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="remember_me">REMEMBER ME</string>
+    <string name="forgot_password">FORGOT PASSWORD?</string>
+    <string name="not_a_user">Not a user yet?</string>
+    <string name="sign_up_as_donor">SIGN UP AS DONOR</string>
+    <string name="sign_up_as_hungerhero">SIGN UP AS HUNGERHERO</string>
+
+    <!-- DonorSignUpActivity-->
+    <string name="user_form">USER FORM</string>
+    <string name="name">NAME(*)</string>
+    <string name="enter_name">Enter full name</string>
+    <string name="dob">DATE OF BIRTH(*)</string>
+    <string name="select_dob">SELECT YOUR DOB</string>
+    <string name="email">EMAIL(*)</string>
+    <string name="enter_email">Enter your email</string>
+    <string name="required_password">PASSWORD(*)</string>
+    <string name="create_password">Create Password</string>
+    <string name="mobile_number">MOBILE NUMBER(*)</string>
+    <string name="enter_number">Enter your mobile number</string>
+    <string name="submit">SUBMIT</string>
+
+    <!-- HungerHeroSignUpActivity -->
+    <string name="hungerhero_form">HUNGERHERO FORM</string>
+    <string name="enter_full_name">Enter full name</string>
+    <string name="educational_background">Educational Background/Course(*)</string>
+    <string name="enter_edu_background">Enter educational background</string>
+    <string name="currently_part_of">School/College/Company/Organization(*)</string>
+    <string name="your_answer">Your answer</string>
+    <string name="state">State(*)</string>
+    <string name="city">City(*)</string>
+    <string name="enter_city">Enter your city</string>
+    <string name="locality">Locality/Area(*)</string>
+    <string name="enter_locality">Enter your locality</string>
+    <string name="pin_code">Pin Code(*)</string>
+    <string name="enter_pin_code">Enter Pin Code</string>
+    <string name="reason_for_joining">Why do you want to join Feeding India?(*)</string>
+    <string name="responsibility">How do you want to be a part?(*)</string>
+    <string name="hunger_hero_description">Be a hunger Hero(Volunteer for donation drives,events).Read more -</string>
+    <string name="superhero_description">Be a Super Hero(Volunteer as a Hunger Hero + Take more responsibility and commitment towards the cause).Read more -</string>
+    <string name="affordable_time">Time you can give to reducing hunger and food wastage(per week)(*)</string>
+    <string name="time1">3-6 hours</string>
+    <string name="time2">6-9 hours</string>
+    <string name="time3">9-12 hours</string>
+    <string name="time4">12-15 hours</string>
+    <string name="time5">15+ hours</string>
+    <string name="about_me">Three words that best describe you(*)</string>
+    <string name="separate">Separate by commas</string>
+    <string name="introduced_through">How did you get to know about Feeding India?(*)</string>
+    <string name="facebook_page">Facebook Page -</string>
+    <string name="website">Website</string>
+    <string name="media">Media Article/News</string>
+    <string name="friend">Through a Friend"</string>
+
+    <!-- Navigation Header -->
+    <string name="nav_header_top_text">FI</string>
+
+    <!-- MakeAdminActivity -->
+    <string name="make_admin_description">Enter the email Id of the person you would like to make admin</string>
+    <string name="make_admin_email">Email</string>
+    <string name="make_admin">MAKE ADMIN</string>
+
+    <!-- ResetPasswordActivity -->
+    <string name="reset_password">SEND RESET PASSWORD LINK</string>
+
+    <!-- VerificationActivity -->
+    <string name="timer_text">60:00</string>
+    <string name="verification_code">VERIFICATION CODE</string>
+    <string name="enter_code">Enter verification code</string>
+    <string name="verify">VERIFY</string>
+    <string name="resend">RESEND CODE</string>
+
+    <!-- Main Menu Items -->
+    <string name="sign_out">Sign Out</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="exit">Exit</string>
+
+    <!-- Nav Menu Items -->
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="notifications">Notifications</string>
+    <string name="my_donations">My Donations</string>
+    <string name="hunger_spots">Hunger spots I spotted</string>
+    <string name="about_us">About Us</string>
+
+    <string name="become_hungerhero">BECOME A HUNGERHERO</string>
+
+    <!-- Donate Fragment -->
+    <string name="donation_details">DONATION DETAILS</string>
+    <string name="food_description">FOOD DESCRIPTION(*)</string>
+    <string name="format">Please follow the following format\nItemNumber.ItemName ItemQuantity</string>
+    <string name="food_prepared_on">WHEN WAS THE FOOD PREPARED?(*)</string>
+    <string name="has_container">DO YOU HAVE CONTAINERS?(*)</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="address">PICKUP LOCATION ADDRESS</string>
+    <string name="or">OR</string>
+    <string name="locate_on_map">Locate on Map</string>
+    <string name="additional_contact_number">Additional Contact Number</string>
+    <string name="contact_number">Contact Number</string>
+
+    <!--Nav Menu Fragment Titles -->
+    <string-array name="fragment_titles">
+        <item>Donate</item>
+        <item>Profile</item>
+        <item>Notifications</item>
+        <item>My Donations</item>
+        <item>Hunger spots I spotted</item>
+        <item>About Us</item>
+    </string-array>
+
+    <!--Bottom Navigation Bar Fragment Titles -->
+    <string-array name="bottom_nav_fragment_titles">
+        <item>Donate</item>
+        <item>Feed</item>
+        <item>Form</item>
+        <item>Validate</item>
+    </string-array>
+
+    <!-- States List -->
+    <string-array name="india_states">
+        <item>Andaman and Nicobar Islands</item>
+        <item>Andhra Pradesh</item>
+        <item>Arunachal Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar</item>
+        <item>Chandigarh</item>
+        <item>Chhattisgarh</item>
+        <item>Dadra and Nagar Haveli</item>
+        <item>Daman and Diu</item>
+        <item>Delhi</item>
+        <item>Goa</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu and Kashmir</item>
+        <item>Jharkhand</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Lakshadweep</item>
+        <item>Madhya Pradesh</item>
+        <item>Maharashtra</item>
+        <item>Manipur</item>
+        <item>Meghalaya</item>
+        <item>Mizoram</item>
+        <item>Nagaland</item>
+        <item>Orissa</item>
+        <item>Pondicherry</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Sikkim</item>
+        <item>Tamil Nadu</item>
+        <item>Telangana</item>
+        <item>Tripura</item>
+        <item>Uttaranchal</item>
+        <item>Uttar Pradesh</item>
+        <item>West Bengal</item>
+    </string-array>
+
+</resources>
