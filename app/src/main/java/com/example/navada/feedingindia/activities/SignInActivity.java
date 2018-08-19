@@ -15,7 +15,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.navada.feedingindia.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -58,15 +57,29 @@ public class SignInActivity extends AppCompatActivity {
 
         mBuilder.setTitle("Send Verification Mail")
                 .setMessage("Not received the verification mail yet?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        if(mFireBaseUser!=null)
-                            mFireBaseUser.sendEmailVerification();
+
+                        if(mAuth.getCurrentUser()!=null)
+                        mAuth.getCurrentUser().sendEmailVerification();
+                        makeToast("Mail sent!");
+
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+
                     public void onClick(DialogInterface dialog, int which) {
 
+
+                    }
+
+                }).setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                        @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+
+                        if(mAuth.getCurrentUser()!=null)
+                            mAuth.signOut();
                     }
                 });
 
@@ -87,6 +100,7 @@ public class SignInActivity extends AppCompatActivity {
                         startActivity(intent);
 
                     }
+
                 }
             }
         };
@@ -138,6 +152,10 @@ public class SignInActivity extends AppCompatActivity {
         if(mAuthStateListener!=null)
             mAuth.removeAuthStateListener(mAuthStateListener);
 
+        if(mAuth.getCurrentUser()!=null)
+            if(!mAuth.getCurrentUser().isEmailVerified())
+                mAuth.signOut();
+
     }
 
     public void onClickSignInButton(View view){
@@ -174,8 +192,6 @@ public class SignInActivity extends AppCompatActivity {
                             }
                         }
                         else {
-                            mFireBaseUser = mAuth.getCurrentUser();
-                            mAuth.signOut();
                             makeToast("Email not verified yet!");
                             mBuilder.show();
                         }
