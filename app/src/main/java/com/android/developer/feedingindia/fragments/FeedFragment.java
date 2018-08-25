@@ -214,10 +214,6 @@ public class FeedFragment extends Fragment implements OnMapReadyCallback{
         super.onActivityCreated(savedInstanceState);
         MapsInitializer.initialize(getActivity());
 
-        if (mapView != null) {
-            mapView.onCreate(savedInstanceState);
-        }
-        //to-do else part
 
     }
 
@@ -300,7 +296,6 @@ public class FeedFragment extends Fragment implements OnMapReadyCallback{
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    
 
                 }
 
@@ -310,8 +305,6 @@ public class FeedFragment extends Fragment implements OnMapReadyCallback{
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
-
-
 
 
     }

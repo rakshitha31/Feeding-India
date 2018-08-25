@@ -43,6 +43,10 @@
         <activity android:name=".activities.MakeAdminActivity"/>
         <activity android:name=".activities.FeedMapActivity"/>
 
+        <activity android:name=".activities.DonordetailsPopUpActivity"
+            android:theme="@style/AppTheme.CustomTheme">
+        </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

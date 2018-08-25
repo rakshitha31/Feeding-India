@@ -114,12 +114,14 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
     private GoogleApiClient mGoogleApiClient;
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
             new LatLng(-40, -168), new LatLng(71, 136));
-  //  private PlaceInfo mPlace;
+    //
+    public List<Marker> markerList= new ArrayList<>();
 
     //Firebase
     private DatabaseReference hungerSpotDatabaseReference;
     private ArrayList<HungerSpot> hungerSpots;
     private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
 
 
@@ -132,6 +134,7 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
         hungerSpotDatabaseReference = firebaseDatabase.getInstance().getReference().child("Hungerspots");
 
         getLocationPermission();
+
 
 
     }
@@ -155,6 +158,19 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
 
             init();
 
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+
+                    if(marker!=null){
+                        Intent intent = new Intent(FeedMapActivity.this,DonordetailsPopUpActivity.class);
+                        startActivity(intent);
+                    }
+                    return false;
+                }
+            });
+            mMap.setMyLocationEnabled(true);
+
         }
 
         hungerSpotDatabaseReference.addChildEventListener(new ChildEventListener() {
@@ -165,9 +181,12 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
                         dataSnapshot.child("latitude").getValue(Long.class),
                         dataSnapshot.child("longitude").getValue(Long.class)
                 );
-                mMap.addMarker(new MarkerOptions()
+
+                MarkerOptions options = new MarkerOptions()
                         .position(newLocation)
-                        .title(dataSnapshot.getKey()));
+                        .title(dataSnapshot.getKey());
+                mMarker=mMap.addMarker(options);
+                markerList.add(mMarker);
             }
 
             @Override
@@ -195,6 +214,8 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
 
 
 
+
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
@@ -211,63 +232,9 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
-
-     /*   goButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                geolocate();
-            }
-        }); */
-
-   /*     mGps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked gps icon");
-                getDeviceLocation();
-            }
-        }); */
-
-    /*    mInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked place info");
-                try{
-                    if(mMarker.isInfoWindowShown()){
-                        mMarker.hideInfoWindow();
-                    }else{
-                       // Log.d(TAG, "onClick: place info: " + mPlace.toString());
-                        mMarker.showInfoWindow();
-                    }
-                }catch (NullPointerException e){
-                    Log.e(TAG, "onClick: NullPointerException: " + e.getMessage() );
-                }
-            }
-        });
-
-        hideSoftKeyboard(); */
     }
 
-    private void geolocate(){
-        Log.d(TAG,"geolocate: geolocating");
-        String searchString = mSearchtext.getText().toString();
 
-        Geocoder geocoder =  new Geocoder(FeedMapActivity.this);
-        List<Address> list = new ArrayList<>();
-        try {
-            list=geocoder.getFromLocationName(searchString,1);
-
-        }catch (IOException e){
-            Log.e(TAG,"geolocate:IOException"+ e.getMessage());
-        }
-        if(list.size()>0){
-            Address address = list.get(0);
-            Log.d(TAG,"geolocate:found a location: "+ address.toString());
-
-            moveCamera(new LatLng(address.getLatitude(),address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
-
-        }
-
-    }
 
     private void getDeviceLocation(){
         Log.d(TAG, "getDeviceLocation: getting the devices current location");
@@ -300,37 +267,6 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
- /*   private void moveCamera(LatLng latLng, float zoom){
-        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-
-        mMap.clear();
-
-        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(MapsActivity.this));
-
-        if(placeInfo != null){
-            try{
-                String snippet = "Address: " + placeInfo.getAddress() + "\n" +
-                        "Phone Number: " + placeInfo.getPhoneNumber() + "\n" +
-                        "Website: " + placeInfo.getWebsiteUri() + "\n" +
-                        "Price Rating: " + placeInfo.getRating() + "\n";
-
-                MarkerOptions options = new MarkerOptions()
-                        .position(latLng)
-                        .title(placeInfo.getName())
-                        .snippet(snippet);
-                mMarker = mMap.addMarker(options);
-
-            }catch (NullPointerException e){
-                Log.e(TAG, "moveCamera: NullPointerException: " + e.getMessage() );
-            }
-        }else{
-            mMap.addMarker(new MarkerOptions().position(latLng));
-        }
-
-        hideSoftKeyboard();
-    } */
-
 
     private void moveCamera(LatLng latLng, float zoom, String title){
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
@@ -340,7 +276,8 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
                 .position(latLng)
                 .title(title);
 
-        mMap.addMarker(options);
+        mMap.addMarker(options)
+        .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
         hideSoftKeyboard();
 
@@ -402,27 +339,5 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
     private void hideSoftKeyboard(){
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
-
-    /*
-        --------------------------- google places API autocomplete suggestions -----------------
-     */
-
- /*   private AdapterView.OnItemClickListener mAutocompleteClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            hideSoftKeyboard();
-
-
-
-
-         //   final String placeId = item.getPlaceId();
-
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                    .getPlaceById(mGoogleApiClient, placeId);
-
-        }
-    }; */
-
-
 
 }
