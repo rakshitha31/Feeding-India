@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.android.developer.feedingindia.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,11 +35,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
         String email = emailEditText.getText().toString().trim();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        if(email.isEmpty()) {
+        if(email.isEmpty())
 
             makeToast("Please enter your email");
-
-        }
 
         else {
 
@@ -67,7 +64,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 }
 
             });
-
         }
 
     }

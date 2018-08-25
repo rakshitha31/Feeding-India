@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,6 +10,7 @@
         android:id="@+id/donordetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="70dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -20,20 +21,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/agreeBtn"
+        android:id="@+id/chooseHS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Agree To Deliver Food"
-        app:layout_constraintBottom_toBottomOf="@+id/donordetails"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="367dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="199dp"
+        android:text="Choose Hunger Spot" />
 
     <Button
-        android:id="@+id/cancelBtn"
+        android:id="@+id/cancelbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel"
-        app:layout_constraintBottom_toBottomOf="@+id/donordetails"
-        tools:layout_editor_absoluteX="243dp"
-        tools:layout_editor_absoluteY="367dp" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="97dp"
+        android:text="Cancel" />
+
+</RelativeLayout>

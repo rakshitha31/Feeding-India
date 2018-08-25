@@ -24,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.developer.feedingindia.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -48,7 +47,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final String TAG_PROFILE = "Profile";
     private static final String TAG_NOTIFICATIONS = "Notifications";
     private static final String TAG_MY_DONATIONS = "My Donations";
+    private static final String TAG_MY_DELIVERIES = "My Deliveries";
     private static final String TAG_SPOTS = "Hunger spots I spotted";
+    private static final String TAG_MAKE_ADMIN = "Make Admin";
+    private static final String TAG_POST_NOTIFICATION = "Add Event";
+    private static final String TAG_CONTACT_US = "Contact Us";
     private static final String TAG_ABOUT_US = "About Us";
     private static int navItemIndex = 0,prevItemIndex=0;
     private static String CURRENT_TAG = TAG_HOME;
@@ -92,8 +95,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navItemIndex = prevItemIndex =0;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            adminRequestBuilder =  new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
             exitBuilder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
         } else {
+            adminRequestBuilder = new AlertDialog.Builder(this);
             exitBuilder = new AlertDialog.Builder(this);
         }
         exitBuilder.setTitle("Exit")
@@ -133,9 +138,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     mSharedPreferences.edit().putString("userType",myMap.get("userType")).apply();
                     mSharedPreferences.edit().remove("fetch").apply();
                     mNavHeaderUserName.setText(mSharedPreferences.getString("name", ""));
+                    if(myMap.get("userType").equals("admin"))
+                        addAdminMenuItems();
                     dataPersists = true;
                     mProgressDialog.cancel();
-                    navItemIndex = 0;
+                    navItemIndex = prevItemIndex = 0;
                     CURRENT_TAG = TAG_HOME;
                     loadFragment();
 
@@ -166,15 +173,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mFragmentTitles = getResources().getStringArray(R.array.fragment_titles);
 
-        if(mSharedPreferences.getBoolean("fetch",false)) {
+        if(mSharedPreferences.getBoolean("fetch",false))
             dataPersists = false;
-        }
 
-        if (savedInstanceState==null && dataPersists) {
-            navItemIndex = 0;
-            CURRENT_TAG = TAG_HOME;
+        if (savedInstanceState==null && dataPersists)
             loadFragment();
-        }
 
     }
 
@@ -186,57 +189,65 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mDatabaseReference.addChildEventListener(mChildEventListener);
             mProgressDialog.show();
         }
-        else
+        else {
+
+            String userType = mSharedPreferences.getString("userType","");
+            if(userType.equals("admin"))
+                addAdminMenuItems();
+
             mNavHeaderUserName.setText(mSharedPreferences.getString("name", ""));
+            Query query = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getUid());
+
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    final HashMap<String, Object> mMap = (HashMap<String, Object>) dataSnapshot.getValue();
+
+                    if (mMap.get("requestedToBeAdmin").equals(true)) {
+
+                        if(adminRequestDialog == null)
+                            adminRequestDialog = adminRequestBuilder.setTitle("Request to be an admin")
+                                    .setMessage("You are requested to become an admin\nDo you want to be an admin?")
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            mMap.put("requestedToBeAdmin", false);
+                                            mMap.put("userType", "admin");
+                                            mSharedPreferences.edit().putString("userType", "admin").apply();
+                                            mDatabaseReference.child(mAuth.getUid()).setValue(mMap);
+                                            makeToast("Congo! You are an admin now");
+
+                                        }
+                                    })
+                                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            mMap.put("requestedToBeAdmin", false);
+                                            mDatabaseReference.child(mAuth.getUid()).setValue(mMap);
+                                        }
+                                    }).setCancelable(false).create();
+
+                        adminRequestDialog.show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
 
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        Query query = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getUid());
+    }
 
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+    private void addAdminMenuItems(){
 
-                final HashMap<String,Object> mMap = (HashMap<String,Object>)dataSnapshot.getValue();
-
-                if(mMap.get("requestedToBeAdmin").equals(true)) {
-                    if (adminRequestBuilder == null) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            adminRequestBuilder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-                        } else {
-                            adminRequestBuilder = new AlertDialog.Builder(MainActivity.this);
-                        }
-                        adminRequestDialog = adminRequestBuilder.setTitle("Request to be an admin")
-                                .setMessage("You are requested to become an admin\nDo you want to be an admin?")
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                        mMap.put("requestedToBeAdmin", false);
-                                        mMap.put("userType", "admin");
-                                        mSharedPreferences.edit().putString("userType", "admin").apply();
-                                        mDatabaseReference.child(mAuth.getUid()).setValue(mMap);
-                                        makeToast("Congo! You are an admin now");
-
-                                    }
-                                })
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                        mMap.put("requestedToBeAdmin", false);
-                                        mDatabaseReference.child(mAuth.getUid()).setValue(mMap);
-                                    }
-                                }).setCancelable(false).create();
-                    }
-                    adminRequestDialog.show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
+        Menu menu = mNavigationView.getMenu();
+        menu.add(0, MAKE_ADMIN_ID, 700, TAG_MAKE_ADMIN);
+        menu.add(0,POST_NOTIFICATION_ID,800,TAG_POST_NOTIFICATION);
 
     }
 
@@ -294,7 +305,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void selectNavMenu() {
-        mNavigationView.getMenu().getItem(navItemIndex).setChecked(true);
+
+        String userType = mSharedPreferences.getString("userType","");
+        if(!userType.equals("admin"))
+        {
+            if(navItemIndex>=8) {
+                mNavigationView.getMenu().getItem(navItemIndex - 2).setChecked(true);
+                prevItemIndex = navItemIndex - 2;
+            }
+            else
+                mNavigationView.getMenu().getItem(navItemIndex).setChecked(true);
+        }
+        else
+            mNavigationView.getMenu().getItem(navItemIndex).setChecked(true);
+
+
     }
 
     private Fragment getFragment() {
@@ -309,8 +334,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 3:
                 return (new MyDonationsFragment());
             case 4:
-                return (new HungerSpotsFragment());
+                return (new MyDeliveriesFragment());
             case 5:
+                return (new HungerSpotsFragment());
+            case 6:
+                return (new MakeAdminFragment());
+            case 7:
+                return (new AddEventFragment());
+            case 8:
+                return (new ContactUsFragment());
+            case 9:
                 return (new AboutUsFragment());
             default:
                 return (new HomeFragment());
@@ -318,11 +351,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        if(mSharedPreferences.getString("userType","normal").equals("admin")) {
-            menu.add(0, MAKE_ADMIN_ID, 100, "Make Admin");
-            menu.add(0,POST_NOTIFICATION_ID,200,"Add Event");
-        }
 
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_menu,menu);
@@ -335,19 +363,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch(item.getItemId()) {
 
-            case MAKE_ADMIN_ID:
-                intent = new Intent(MainActivity.this,MakeAdminActivity.class);
-                startActivity(intent);
-                break;
-
-            case POST_NOTIFICATION_ID:
-                break;
-
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
-                break;
-
-            case R.id.main_menu_contact_us:
                 break;
 
             case R.id.main_menu_sign_out:
@@ -389,14 +406,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 navItemIndex = 3;
                 break;
 
+            case R.id.nav_menu_item_deliveries:
+                CURRENT_TAG = TAG_MY_DELIVERIES;
+                navItemIndex = 4;
+                break;
+
             case R.id.nav_menu_item_hunger_spots:
                 CURRENT_TAG = TAG_SPOTS;
-                navItemIndex = 4;
+                navItemIndex = 5;
+                break;
+
+            case MAKE_ADMIN_ID :
+                CURRENT_TAG = TAG_MAKE_ADMIN;
+                navItemIndex = 6;
+                break;
+
+            case POST_NOTIFICATION_ID :
+                CURRENT_TAG = TAG_POST_NOTIFICATION;
+                navItemIndex = 7;
+                break;
+
+            case R.id.nav_menu_contact_us :
+                CURRENT_TAG = TAG_CONTACT_US;
+                navItemIndex = 8;
                 break;
 
             case R.id.nav_menu_item_about_us:
                 CURRENT_TAG = TAG_ABOUT_US;
-                navItemIndex = 5;
+                navItemIndex = 9;
                 break;
 
             default:

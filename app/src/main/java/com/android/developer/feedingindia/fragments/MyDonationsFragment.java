@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,24 +13,23 @@ import com.android.developer.feedingindia.R;
 import com.android.developer.feedingindia.pojos.DonationDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class MyDonationsFragment extends Fragment {
 
-    private Query donationQuery;
-    private long userDonationCount = 0,readCount = 0;
+    private DatabaseReference donationDatabaseReference;
+    private long userDonationCount = 0;
     private ProgressBar progressBar;
     private LinearLayout mLinearLayout;
-    private ArrayList<DonationDetails> userDonationList;
-    private ChildEventListener childEventListener;
+    private HashMap<String,DonationDetails> userDonationList;
 
     public MyDonationsFragment() {
         // Required empty public constructor
@@ -41,55 +39,10 @@ public class MyDonationsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userDonationList = new ArrayList<>();
+        userDonationList = new HashMap<>();
         userDonationCount = 0;
-        readCount = 0;
-        donationQuery = FirebaseDatabase.getInstance().getReference().child("Donations").
-                        orderByKey().equalTo(FirebaseAuth.getInstance().getUid());
-
-        childEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                Log.d("Hello", "onChildAdded: "+dataSnapshot.getValue().toString());
-
-                ObjectMapper objectMapper = new ObjectMapper();
-                HashMap<String,HashMap<String,Object>> parentMap = (HashMap<String,HashMap<String,Object>>)dataSnapshot.getValue();
-                Collection<HashMap<String,Object>> mCollection = parentMap.values();
-                for(HashMap<String,Object> instance : mCollection)
-                {
-                    DonationDetails donationDetails = objectMapper.convertValue(instance,DonationDetails.class);
-                    userDonationList.add(donationDetails);
-                }
-
-                readCount++;
-
-                if(readCount == userDonationCount)
-                    enableUserInteraction();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        };
-
-
+        donationDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Donations").
+                child(FirebaseAuth.getInstance().getUid());
     }
 
 
@@ -110,7 +63,7 @@ public class MyDonationsFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
         mLinearLayout.setVisibility(View.INVISIBLE);
-        donationQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+        donationDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -118,8 +71,20 @@ public class MyDonationsFragment extends Fragment {
 
                 if(userDonationCount == 0)
                     enableUserInteraction();
-                else
-                    donationQuery.addChildEventListener(childEventListener);
+                else {
+
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    HashMap<String,HashMap<String,Object>> myList = (HashMap<String,HashMap<String,Object>>)dataSnapshot.getValue();
+                    Set mySet = myList.entrySet();
+                    Iterator iterator = mySet.iterator();
+                    while(iterator.hasNext()){
+                        Map.Entry myMapEntry =(Map.Entry) iterator.next();
+                        DonationDetails donationDetails = objectMapper.convertValue(myMapEntry.getValue(), DonationDetails.class);
+                        userDonationList.put(myMapEntry.getKey().toString(),donationDetails);
+                    }
+
+                    enableUserInteraction();
+                }
 
             }
 
@@ -136,8 +101,16 @@ public class MyDonationsFragment extends Fragment {
         super.onPause();
 
         userDonationCount = 0;
-        readCount = 0;
         userDonationList.clear();
+    }
+
+
+    private void onClickDelete(String pushID){
+
+        DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Donations").
+                child(FirebaseAuth.getInstance().getUid()).child(pushID);
+        mDatabaseReference.removeValue();
+
     }
 
     private void enableUserInteraction()

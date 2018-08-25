@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,28 +46,28 @@ public class HungerSpotsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        readHungerSpots = 0;
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.example.navada.feedingindia", Context.MODE_PRIVATE);
+        readHungerSpots = hungerSpotCount = 0;
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.android.developer.feedingindia", Context.MODE_PRIVATE);
         userName = sharedPreferences.getString("name","");
         mHungerSpots = new ArrayList<>();
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("HungerSpots");
         hungerSpotQuery = FirebaseDatabase.getInstance().getReference().
-                        child("HungerSpots").orderByChild("addedBy").equalTo(userName);
+                child("HungerSpots").orderByChild("addedBy").equalTo(userName);
 
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                    HungerSpot hungerSpot = dataSnapshot.getValue(HungerSpot.class);
-                    Location location = new Location(LocationManager.GPS_PROVIDER);
-                    location.setLatitude(hungerSpot.getLatitude());
-                    location.setLongitude(hungerSpot.getLongitude());
-                    mHungerSpots.add(location);
-                    readHungerSpots++;
+                HungerSpot hungerSpot = dataSnapshot.getValue(HungerSpot.class);
+                Location location = new Location(LocationManager.GPS_PROVIDER);
+                location.setLatitude(hungerSpot.getLatitude());
+                location.setLongitude(hungerSpot.getLongitude());
+                mHungerSpots.add(location);
+                readHungerSpots++;
 
                 if(readHungerSpots == hungerSpotCount)
-                enableUserInteraction();
+                    enableUserInteraction();
             }
 
             @Override
@@ -117,6 +118,7 @@ public class HungerSpotsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 hungerSpotCount = dataSnapshot.getChildrenCount();
+
                 if(hungerSpotCount == 0)
                     enableUserInteraction();
                 else
@@ -137,7 +139,6 @@ public class HungerSpotsFragment extends Fragment {
 
         if(childEventListener!=null)
             hungerSpotQuery.removeEventListener(childEventListener);
-
         mHungerSpots.clear();
         readHungerSpots = 0;
     }
@@ -148,11 +149,9 @@ public class HungerSpotsFragment extends Fragment {
         mLinearLayout.setVisibility(View.VISIBLE);
     }
 
-    private void addHungerSpot()
+    private void addHungerSpot(double latitude, double longitude)
     {
-        //Location co-ordinates to be changed
-
-        HungerSpot hungerSpot = new HungerSpot(userName,"pending",0,0);
+        HungerSpot hungerSpot = new HungerSpot(userName,"pending",latitude,longitude);
         mDatabaseReference.push().setValue(hungerSpot);
         makeToast("Success! HungerSpot added");
     }

@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -32,6 +33,7 @@ public class SignInActivity extends AppCompatActivity {
     private Intent intent;
     private SharedPreferences mSharedPreferences;
     private AlertDialog.Builder mBuilder;
+    private AlertDialog mAlertDialog;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseUser mFireBaseUser;
@@ -55,33 +57,31 @@ public class SignInActivity extends AppCompatActivity {
         else
             mBuilder = new AlertDialog.Builder(this);
 
-        mBuilder.setTitle("Send Verification Mail")
+        mAlertDialog = mBuilder.setTitle("Send Verification Mail")
                 .setMessage("Not received the verification mail yet?")
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
                         if(mAuth.getCurrentUser()!=null)
-                        mAuth.getCurrentUser().sendEmailVerification();
+                            mAuth.getCurrentUser().sendEmailVerification();
                         makeToast("Mail sent!");
 
                     }
                 })
+
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which) {  } })
 
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
 
-                    }
-
-                }).setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                        @Override
+                    @Override
                     public void onDismiss(DialogInterface dialogInterface) {
 
                         if(mAuth.getCurrentUser()!=null)
                             mAuth.signOut();
                     }
-                });
+                }).create();
 
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -100,7 +100,6 @@ public class SignInActivity extends AppCompatActivity {
                         startActivity(intent);
 
                     }
-
                 }
             }
         };
@@ -156,6 +155,9 @@ public class SignInActivity extends AppCompatActivity {
             if(!mAuth.getCurrentUser().isEmailVerified())
                 mAuth.signOut();
 
+        if(mAlertDialog!=null)
+            mAlertDialog.dismiss();
+
     }
 
     public void onClickSignInButton(View view){
@@ -175,25 +177,26 @@ public class SignInActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
 
+                    Log.i("Hello", "onComplete: ");
+
                     mProgressDialog.cancel();
 
                     if (task.isSuccessful()) {
                         //Signed in
-                        if (mAuth.getCurrentUser().isEmailVerified()) {
+                        if (mAuth.getCurrentUser().isEmailVerified()){
 
-                            String storedEmail = mSharedPreferences.getString("email","");
+                            String storedEmail = mSharedPreferences.getString("email", "");
 
-                            if(storedEmail.equals("") || ! (userEmail.equals(storedEmail)))
-                                mSharedPreferences.edit().putBoolean("fetch",true).apply();
+                            if (storedEmail.equals("") || !(userEmail.equals(storedEmail)))
+                                mSharedPreferences.edit().putBoolean("fetch", true).apply();
 
-                            else if (rememberMeCheckBox.isChecked()) {
-                                mSharedPreferences.edit().putString("email", userEmail).apply();
+                            else if (rememberMeCheckBox.isChecked())
                                 mSharedPreferences.edit().putString("password", userPassword).apply();
-                            }
                         }
+
                         else {
                             makeToast("Email not verified yet!");
-                            mBuilder.show();
+                            mAlertDialog.show();
                         }
                     }
                     else

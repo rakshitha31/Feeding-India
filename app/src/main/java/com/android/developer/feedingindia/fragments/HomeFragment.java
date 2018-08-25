@@ -1,8 +1,6 @@
 package com.android.developer.feedingindia.fragments;
 
-
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.android.developer.feedingindia.R;
-import com.android.developer.feedingindia.activities.FeedMapActivity;
-
 
 public class HomeFragment extends Fragment {
 
@@ -51,7 +48,7 @@ public class HomeFragment extends Fragment {
         toolbar = ((AppCompatActivity)getActivity()).getSupportActionBar();
         mBottomNavFragmentTitles = getResources().getStringArray(R.array.bottom_nav_fragment_titles);
         mHandler = new Handler();
-        mSharedPreferences = this.getActivity().getSharedPreferences("com.example.navada.feedingindia", Context.MODE_PRIVATE);
+        mSharedPreferences = this.getActivity().getSharedPreferences("com.android.developer.feedingindia", Context.MODE_PRIVATE);
 
         navItemId = 1;
         CURRENT_TAG = TAG_DONATE;
@@ -115,8 +112,7 @@ public class HomeFragment extends Fragment {
                     case MENU_ITEM_ID_TWO:
                         CURRENT_TAG = TAG_FEED;
                         navItemId = 2;
-                        Intent intent=new Intent(getActivity(),FeedMapActivity.class);
-                        startActivity(intent);
+                        loadFragment(new FeedFragment());
                         break;
 
                     case MENU_ITEM_ID_THREE:
@@ -145,7 +141,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setBottomNavBar(){
-        
+
         String userType =  mSharedPreferences.getString("userType","normal");
 
         Menu mBottomNavMenu = mBottomNavigationView.getMenu();
@@ -181,9 +177,10 @@ public class HomeFragment extends Fragment {
 
     private void loadFragment(final Fragment fragment) {
 
+        final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
-        if(getActivity().getSupportFragmentManager().getBackStackEntryCount()>0)
-            getActivity().getSupportFragmentManager().popBackStack();
+        if(fragmentManager.getBackStackEntryCount()>0)
+            fragmentManager.popBackStack();
 
         setToolBarTitle();
         selNavMenuItem();
@@ -191,7 +188,7 @@ public class HomeFragment extends Fragment {
         Runnable mPendingRunnable = new Runnable() {
 
             public void run() {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.setCustomAnimations(android.R.anim.fade_in,
                         android.R.anim.fade_out);
                 transaction.replace(R.id.frame_container, fragment ,CURRENT_TAG);

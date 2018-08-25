@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.android.developer.feedingindia.R;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -71,8 +70,8 @@ public class DonorSignUpActivity extends AppCompatActivity {
             @Override
             public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(verificationId, forceResendingToken);
-                mProgressDialog.cancel();
 
+                mProgressDialog.cancel();
                 token = forceResendingToken;
                 Intent intent = new Intent(DonorSignUpActivity.this,VerificationActivity.class);
                 intent.putExtra("userName",userName);

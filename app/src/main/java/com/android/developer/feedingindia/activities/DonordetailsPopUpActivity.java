@@ -1,17 +1,28 @@
 package com.android.developer.feedingindia.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.developer.feedingindia.R;
+import com.android.developer.feedingindia.fragments.FeedFragment;
 import com.android.developer.feedingindia.pojos.DonationDetails;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 public class DonordetailsPopUpActivity extends Activity{
 
@@ -19,6 +30,7 @@ public class DonordetailsPopUpActivity extends Activity{
     private FirebaseDatabase firebaseDatabase;
     private TextView donorDetails;
     private DataSnapshot dataSnapshot;
+    private Button chooseHS,cancel;
 
 
 
@@ -27,6 +39,8 @@ public class DonordetailsPopUpActivity extends Activity{
         super.onCreate(savedInstanceState);
 
         donorDetails=(TextView)findViewById(R.id.donordetails);
+        chooseHS=(Button)findViewById(R.id.chooseHS);
+        cancel=(Button)findViewById(R.id.cancelbtn);
 
         setContentView(R.layout.activity_donordetailspopup);
 
@@ -40,12 +54,27 @@ public class DonordetailsPopUpActivity extends Activity{
         firebaseDatabase = FirebaseDatabase.getInstance();
          donoationsDatabaseReference= firebaseDatabase.getInstance().getReference().child("Donations");
 
-         for (DataSnapshot s:dataSnapshot.getChildren()){
-             DonationDetails donations=s.getValue(DonationDetails.class);
+        //To-do:  Get Donation Details data and display//
+//
+        //
+        //
+        //
+        //
+        //
 
+        chooseHS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(DonordetailsPopUpActivity.this,HungerSpotsMapActivity.class));
+            }
+        });
 
-         }
-
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(DonordetailsPopUpActivity.this,FeedMapActivity.class));
+            }
+        });
 
 
     }

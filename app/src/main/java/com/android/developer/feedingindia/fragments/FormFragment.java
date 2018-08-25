@@ -2,7 +2,9 @@ package com.android.developer.feedingindia.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.developer.feedingindia.R;
 import com.android.developer.feedingindia.pojos.HungerHero;
@@ -26,10 +29,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class FormFragment extends Fragment {
+public class FormFragment extends Fragment implements  View.OnClickListener,CompoundButton.OnCheckedChangeListener{
 
     private EditText educationalBackgroundEditText,currentlyPartOfEditText,cityEditText,localityEditText,
-                     pinCodeEditText,reasonForJoiningEditText,aboutMeEditText;
+            pinCodeEditText,reasonForJoiningEditText,aboutMeEditText;
     private String responsibility = "hungerhero";
     private String affordableTime = "3-6 hours";
     private String state;
@@ -37,6 +40,7 @@ public class FormFragment extends Fragment {
     private Spinner spinner;
     private ArrayAdapter spinnerAdapter;
     private Button hungerHeroDetailsSubmitButton;
+    private TextView textView1,textView2,textView3,textView4;
     private CheckBox checkBox1,checkBox2,checkBox3,checkBox4;
     private RadioButton radioButton1,radioButton2,radioButton3,radioButton4,radioButton5,radioButton6,radioButton7;
     private ProgressDialog mProgressDialog;
@@ -53,7 +57,7 @@ public class FormFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         introducedToFIThrough = new ArrayList<>();
-        mSharedPreferences = getActivity().getSharedPreferences("com.example.navada.feedingindia", Context.MODE_PRIVATE);
+        mSharedPreferences = getActivity().getSharedPreferences("com.android.developer.feedingindia", Context.MODE_PRIVATE);
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getUid());
 
         mProgressDialog = new ProgressDialog(getContext());
@@ -81,7 +85,7 @@ public class FormFragment extends Fragment {
         aboutMeEditText = view.findViewById(R.id.aboutMeEditText);
         spinner = view.findViewById(R.id.spinner);
         spinner.setAdapter(spinnerAdapter);
-        hungerHeroDetailsSubmitButton = view.findViewById(R.id.hungerHeroDetailsSubmitButton);
+        hungerHeroDetailsSubmitButton = view.findViewById(R.id.submitButton);
         checkBox1 = view.findViewById(R.id.checkBox1);
         checkBox2 = view.findViewById(R.id.checkBox2);
         checkBox3 = view.findViewById(R.id.checkBox3);
@@ -93,6 +97,10 @@ public class FormFragment extends Fragment {
         radioButton5 = view.findViewById(R.id.radioButton5);
         radioButton6 = view.findViewById(R.id.radioButton6);
         radioButton7 = view.findViewById(R.id.radioButton7);
+        textView1 = view.findViewById(R.id.textView1);
+        textView2 = view.findViewById(R.id.textView2);
+        textView3 = view.findViewById(R.id.textView3);
+        textView4 = view.findViewById(R.id.textView4);
 
         return view;
     }
@@ -101,110 +109,7 @@ public class FormFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        radioButton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                affordableTime = "3-6 hours";
-            }
-        });
-
-        radioButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                affordableTime = "6-9 hours";
-            }
-        });
-
-        radioButton3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                affordableTime = "9-12 hours";
-            }
-        });
-
-        radioButton4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               responsibility = "hungerhero";
-            }
-        });
-
-        radioButton5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                responsibility = "superhero";
-            }
-        });
-
-        radioButton6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                affordableTime = "12-15 hours";
-            }
-        });
-
-        radioButton7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                affordableTime = "15+ hours";
-            }
-        });
-
-        checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    if(!introducedToFIThrough.contains("Facebook"))
-                    introducedToFIThrough.add("Facebook");
-                }
-                else
-                    if(introducedToFIThrough.contains("Facebook"))
-                        introducedToFIThrough.remove("Facebook");
-
-            }
-        });
-
-        checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    if(!introducedToFIThrough.contains("Website"))
-                    introducedToFIThrough.add("Website");
-                }
-                else
-                if(introducedToFIThrough.contains("Website"))
-                    introducedToFIThrough.remove("Website");
-
-            }
-        });
-
-        checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    if(!introducedToFIThrough.contains("Media/News"))
-                    introducedToFIThrough.add("Media/News");
-                }
-                else
-                if(introducedToFIThrough.contains("Media/News"))
-                    introducedToFIThrough.remove("Media/News");
-
-            }
-        });
-
-        checkBox4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    if(!introducedToFIThrough.contains("Through a Friend"))
-                    introducedToFIThrough.add("Through a Friend");
-                }
-                else
-                if(introducedToFIThrough.contains("Through a Friend"))
-                    introducedToFIThrough.remove("Through a Friend");
-
-            }
-        });
+        attachListeners();
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -229,6 +134,26 @@ public class FormFragment extends Fragment {
 
     }
 
+    private void attachListeners(){
+
+        checkBox1.setOnCheckedChangeListener(this);
+        checkBox2.setOnCheckedChangeListener(this);
+        checkBox3.setOnCheckedChangeListener(this);
+        checkBox4.setOnCheckedChangeListener(this);
+        radioButton1.setOnClickListener(this);
+        radioButton2.setOnClickListener(this);
+        radioButton3.setOnClickListener(this);
+        radioButton4.setOnClickListener(this);
+        radioButton5.setOnClickListener(this);
+        radioButton6.setOnClickListener(this);
+        radioButton7.setOnClickListener(this);
+        textView1.setOnClickListener(this);
+        textView2.setOnClickListener(this);
+        textView3.setOnClickListener(this);
+        textView4.setOnClickListener(this);
+
+    }
+
     private void onClickSubmitButton(){
 
         String educationalBackground = educationalBackgroundEditText.getText().toString().trim();
@@ -241,7 +166,7 @@ public class FormFragment extends Fragment {
         ArrayList<String> aboutMeList = new ArrayList<>();
 
         if(educationalBackground.isEmpty() || currentlyPartOf.isEmpty() || city.isEmpty() ||
-           locality.isEmpty() || pinCode.isEmpty() || reasonForJoining.isEmpty() || !(aboutMe.length>0)
+                locality.isEmpty() || pinCode.isEmpty() || reasonForJoining.isEmpty() || !(aboutMe.length>0)
                 || !(introducedToFIThrough.size()>0))
             makeToast("Fields marked with * cannot be empty!");
 
@@ -262,6 +187,101 @@ public class FormFragment extends Fragment {
             mProgressDialog.cancel();
             makeToast("Congo! You are a "+responsibility+" now");
         }
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()){
+
+            case R.id.textView1:
+                openBrowser("https://www.google.com");
+                break;
+
+            case R.id.textView2:
+                openBrowser("https://www.facebook.com");
+                break;
+
+            case R.id.textView3:
+                openBrowser("https://www.google.com");
+                break;
+
+            case R.id.textView4:
+                openBrowser("https://www.facebook.com");
+                break;
+
+            case R.id.radioButton1 :
+                affordableTime = "3-6 hours";
+                break;
+
+            case R.id.radioButton2 :
+                affordableTime = "6-9 hours";
+                break;
+
+            case R.id.radioButton3 :
+                affordableTime = "9-12 hours";
+                break;
+
+            case R.id.radioButton4 :
+                responsibility = "hungerhero";
+                break;
+
+            case R.id.radioButton5 :
+                responsibility = "superhero";
+                break;
+
+            case R.id.radioButton6 :
+                affordableTime = "12-15 hours";
+                break;
+
+            case R.id.radioButton7 :
+                affordableTime = "15+ hours";
+                break;
+        }
+
+    }
+
+    private void openBrowser(String url){
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+
+        switch (compoundButton.getId()){
+
+            case R.id.checkBox1 :
+                addOrRemove("Facebook",checked);
+                break;
+
+            case R.id.checkBox2 :
+                addOrRemove("Website",checked);
+                break;
+
+            case R.id.checkBox3 :
+                addOrRemove("Media/News",checked);
+                break;
+
+            case R.id.checkBox4 :
+                addOrRemove("Through a Friend",checked);
+                break;
+
+        }
+    }
+
+    private void addOrRemove(String s,boolean checked){
+
+        if(checked){
+            if(!introducedToFIThrough.contains(s))
+                introducedToFIThrough.add(s);
+        }
+        else
+        if(introducedToFIThrough.contains(s))
+            introducedToFIThrough.remove(s);
 
     }
 

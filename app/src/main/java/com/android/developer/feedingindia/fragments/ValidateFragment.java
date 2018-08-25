@@ -43,22 +43,22 @@ public class ValidateFragment extends Fragment {
         readHungerSpots = 0;
 
         hungerSpotQuery = FirebaseDatabase.getInstance().getReference().child("HungerSpots").
-                          orderByChild("status").equalTo("pending");
+                orderByChild("status").equalTo("pending");
 
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
                 HungerSpot hungerSpot = dataSnapshot.getValue(HungerSpot.class);
-                    Location location = new Location(LocationManager.GPS_PROVIDER);
-                    location.setLatitude(hungerSpot.getLatitude());
-                    location.setLongitude(hungerSpot.getLongitude());
-                    mHungerSpots.put(dataSnapshot.getKey(),location);
+                Location location = new Location(LocationManager.GPS_PROVIDER);
+                location.setLatitude(hungerSpot.getLatitude());
+                location.setLongitude(hungerSpot.getLongitude());
+                mHungerSpots.put(dataSnapshot.getKey(),location);
 
                 readHungerSpots++;
 
                 if(readHungerSpots == hungerSpotCount)
-                enableUserInteraction();
+                    enableUserInteraction();
             }
 
             @Override
@@ -150,32 +150,39 @@ public class ValidateFragment extends Fragment {
 
     public void onClickValidate(String key) {
 
-    final DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("HungerSpots").
-                         child(key);
-    mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-
-        @Override
-
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-            HashMap<String,Object> post =(HashMap<String,Object>) dataSnapshot.getValue();
-            post.put("status","validated");
-            mDatabaseReference.updateChildren(post);
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    });
+        update(key,"validated");
 
     }
 
     public void onClickInvalidate(String key){
 
+        update(key,"invalid");
+    }
+
+    private void update(String key, final String status){
+
         final DatabaseReference mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("HungerSpots").
                 child(key);
-        mDatabaseReference.removeValue();
+        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                HashMap<String,Object> post =(HashMap<String,Object>) dataSnapshot.getValue();
+                if(status.equals("validated"))
+                    post.put("status","validated");
+                else
+                    post.put("status","invalid");
+                mDatabaseReference.updateChildren(post);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 }

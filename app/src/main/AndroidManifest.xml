@@ -34,14 +34,12 @@
             android:name=".activities.ResetPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.ContactUsActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.HungerHeroSignUpActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activities.VerificationActivity" />
         <activity android:name=".activities.MakeAdminActivity"/>
         <activity android:name=".activities.FeedMapActivity"/>
+
 
         <activity android:name=".activities.DonordetailsPopUpActivity"
             android:theme="@style/AppTheme.CustomTheme">

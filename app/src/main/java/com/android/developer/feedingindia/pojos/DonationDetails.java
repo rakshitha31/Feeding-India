@@ -4,15 +4,15 @@ import java.util.HashMap;
 
 public class DonationDetails {
 
-    private String foodDescription,foodPreparedOn,additionalContactNumber,status,userContactNumber;
+    private String foodDescription,foodPreparedOn,additionalContactNumber,status,userContactNumber,deliverer;
     private boolean hasContainer,canDonate;
-    private HashMap<String,String> address;
+    private HashMap<String,Object> donorAddress;
 
     public DonationDetails() {
 
     }
 
-    public DonationDetails(String foodDescription, String foodPreparedOn, String additionalContactNumber, String status, String userContactNumber, boolean hasContainer, boolean canDonate, HashMap<String, String> address) {
+    public DonationDetails(String foodDescription, String foodPreparedOn, String additionalContactNumber, String status, String userContactNumber, boolean hasContainer, boolean canDonate, String deliverer, HashMap<String, Object> donorAddress) {
         this.foodDescription = foodDescription;
         this.foodPreparedOn = foodPreparedOn;
         this.additionalContactNumber = additionalContactNumber;
@@ -20,7 +20,8 @@ public class DonationDetails {
         this.userContactNumber = userContactNumber;
         this.hasContainer = hasContainer;
         this.canDonate = canDonate;
-        this.address = address;
+        this.deliverer = deliverer;
+        this.donorAddress = donorAddress;
     }
 
     public String getFoodDescription() {
@@ -51,7 +52,11 @@ public class DonationDetails {
         return canDonate;
     }
 
-    public HashMap<String, String> getAddress() {
-        return address;
+    public String getDeliverer() {
+        return deliverer;
+    }
+
+    public HashMap<String,Object> getDonorAddress() {
+        return donorAddress;
     }
 }

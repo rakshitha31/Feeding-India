@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.MakeAdminActivity"
+    tools:context=".fragments.MakeAdminFragment"
     android:gravity="center">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/make_admin_description"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textColor="@color/sienna"
         android:textAlignment="viewStart"
         android:layout_margin="@dimen/margin_five_dp" />
@@ -34,7 +34,7 @@
         android:text="@string/make_admin"
         android:background="@drawable/button_background"
         android:textColor="@color/white"
-        android:onClick="onClickMakeAdmin"
+        android:id="@+id/makeAdminButton"
         android:layout_marginRight="@dimen/margin_five_dp"
         android:layout_marginLeft="@dimen/margin_five_dp"
         android:layout_marginTop="@dimen/margin_ten_dp" />

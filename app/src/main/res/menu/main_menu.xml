@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/main_menu_contact_us"
-          android:title="@string/contact_us"
-          android:orderInCategory="300"/>
-
     <item android:id="@+id/main_menu_sign_out"
-          android:title="@string/sign_out"
-          android:orderInCategory="400"/>
+        android:title="@string/sign_out" />
 
     <item android:id="@+id/main_menu_exit"
-          android:title="@string/exit"
-          android:orderInCategory="500"/>
+        android:title="@string/exit" />
 
 </menu>

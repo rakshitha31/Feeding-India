@@ -3,9 +3,9 @@
     <string name="app_name">Feeding India</string>
 
     <!-- SignInActivity -->
-    <string name="username">USERNAME</string>
+    <string name="username">Username</string>
     <string name="enter_username">Enter username</string>
-    <string name="password">PASSWORD</string>
+    <string name="password">Password</string>
     <string name="enter_password">Enter password</string>
     <string name="sign_in">SIGN IN</string>
     <string name="remember_me">REMEMBER ME</string>
@@ -15,18 +15,19 @@
     <string name="sign_up_as_hungerhero">SIGN UP AS HUNGERHERO</string>
 
     <!-- DonorSignUpActivity-->
-    <string name="user_form">USER FORM</string>
-    <string name="name">NAME(*)</string>
+    <string name="user_form">DONOR FORM</string>
+    <string name="name">Name(*)</string>
     <string name="enter_name">Enter full name</string>
-    <string name="dob">DATE OF BIRTH(*)</string>
+    <string name="dob">Date of Birth(*)</string>
     <string name="select_dob">SELECT YOUR DOB</string>
-    <string name="email">EMAIL(*)</string>
+    <string name="email">Email(*)</string>
     <string name="enter_email">Enter your email</string>
-    <string name="required_password">PASSWORD(*)</string>
+    <string name="required_password">Password(*)</string>
     <string name="create_password">Create Password</string>
-    <string name="mobile_number">MOBILE NUMBER(*)</string>
+    <string name="mobile_number">Mobile Number(*)</string>
     <string name="enter_number">Enter your mobile number</string>
     <string name="submit">SUBMIT</string>
+    <string name="read_more">Read More</string>
 
     <!-- HungerHeroSignUpActivity -->
     <string name="hungerhero_form">HUNGERHERO FORM</string>
@@ -40,12 +41,12 @@
     <string name="enter_city">Enter your city</string>
     <string name="locality">Locality/Area(*)</string>
     <string name="enter_locality">Enter your locality</string>
-    <string name="pin_code">Pin Code(*)</string>
+    <string name="pin_code">PinCode(*)</string>
     <string name="enter_pin_code">Enter Pin Code</string>
     <string name="reason_for_joining">Why do you want to join Feeding India?(*)</string>
     <string name="responsibility">How do you want to be a part?(*)</string>
-    <string name="hunger_hero_description">Be a hunger Hero(Volunteer for donation drives,events).Read more -</string>
-    <string name="superhero_description">Be a Super Hero(Volunteer as a Hunger Hero + Take more responsibility and commitment towards the cause).Read more -</string>
+    <string name="hunger_hero_description">Be a Hunger Hero(Volunteer for donation drives,events) -</string>
+    <string name="superhero_description">Be a Super Hero(Volunteer as a Hunger Hero + Take more responsibility and commitment towards the cause) -</string>
     <string name="affordable_time">Time you can give to reducing hunger and food wastage(per week)(*)</string>
     <string name="time1">3-6 hours</string>
     <string name="time2">6-9 hours</string>
@@ -56,14 +57,15 @@
     <string name="separate">Separate by commas</string>
     <string name="introduced_through">How did you get to know about Feeding India?(*)</string>
     <string name="facebook_page">Facebook Page -</string>
-    <string name="website">Website</string>
+    <string name="website">Website -</string>
     <string name="media">Media Article/News</string>
+    <string name="link">Page Link</string>
     <string name="friend">Through a Friend"</string>
 
     <!-- Navigation Header -->
     <string name="nav_header_top_text">FI</string>
 
-    <!-- MakeAdminActivity -->
+    <!-- MakeAdminFragment -->
     <string name="make_admin_description">Enter the email Id of the person you would like to make admin</string>
     <string name="make_admin_email">Email</string>
     <string name="make_admin">MAKE ADMIN</string>
@@ -80,7 +82,6 @@
 
     <!-- Main Menu Items -->
     <string name="sign_out">Sign Out</string>
-    <string name="contact_us">Contact Us</string>
     <string name="exit">Exit</string>
 
     <!-- Nav Menu Items -->
@@ -88,24 +89,36 @@
     <string name="profile">Profile</string>
     <string name="notifications">Notifications</string>
     <string name="my_donations">My Donations</string>
+    <string name="my_deliveries">My Deliveries</string>
     <string name="hunger_spots">Hunger spots I spotted</string>
+    <string name="contact_us">Contact Us</string>
     <string name="about_us">About Us</string>
 
     <string name="become_hungerhero">BECOME A HUNGERHERO</string>
 
     <!-- Donate Fragment -->
     <string name="donation_details">DONATION DETAILS</string>
-    <string name="food_description">FOOD DESCRIPTION(*)</string>
-    <string name="format">Please follow the following format\nItemNumber.ItemName ItemQuantity</string>
-    <string name="food_prepared_on">WHEN WAS THE FOOD PREPARED?(*)</string>
-    <string name="has_container">DO YOU HAVE CONTAINERS?(*)</string>
+    <string name="food_description">Food Description(*)</string>
+    <string name="enter_description">Enter food description</string>
+    <string name="food_prepared_on">When was the food prepared?(*)</string>
+    <string name="has_container">Do you have containers?(*)</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="address">PICKUP LOCATION ADDRESS</string>
+    <string name="pick_up_address">Pickup Location Address</string>
+    <string name="address">Address(*)</string>
+    <string name="enter_address">Enter full address</string>
     <string name="or">OR</string>
     <string name="locate_on_map">Locate on Map</string>
     <string name="additional_contact_number">Additional Contact Number</string>
     <string name="contact_number">Contact Number</string>
+
+    <!-- Profile Fragment -->
+    <string name="user_name">Name</string>
+    <string name="user_dob">Date of Birth</string>
+    <string name="user_email">Email</string>
+    <string name="user_role">Role</string>
+    <string name="user_mobile_number">Mobile Number</string>
+    <string name="colon">:</string>
 
     <!--Nav Menu Fragment Titles -->
     <string-array name="fragment_titles">
@@ -113,7 +126,11 @@
         <item>Profile</item>
         <item>Notifications</item>
         <item>My Donations</item>
+        <item>My Deliveries</item>
         <item>Hunger spots I spotted</item>
+        <item>Make Admin</item>
+        <item>Add Event</item>
+        <item>Contact Us</item>
         <item>About Us</item>
     </string-array>
 

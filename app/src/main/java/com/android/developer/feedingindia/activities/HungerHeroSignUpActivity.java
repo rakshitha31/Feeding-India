@@ -3,6 +3,7 @@ package com.android.developer.feedingindia.activities;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,9 +14,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.developer.feedingindia.R;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -28,7 +30,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
-public class HungerHeroSignUpActivity extends AppCompatActivity implements View.OnClickListener{
+public class HungerHeroSignUpActivity extends AppCompatActivity implements View.OnClickListener,CompoundButton.OnCheckedChangeListener{
 
     private EditText nameEditText,emailEditText,passwordEditText,mobileNumberEditText,educationalBackgroundEditText,
             currentlyPartOfEditText,cityEditText,localityEditText,pinCodeEditText,reasonForJoiningEditText,aboutMeEditText;
@@ -45,6 +47,9 @@ public class HungerHeroSignUpActivity extends AppCompatActivity implements View.
     public static PhoneAuthProvider.ForceResendingToken token;
     private Spinner spinner;
     private CheckBox checkBox1,checkBox2,checkBox3,checkBox4;
+    private RadioButton radioButton1,radioButton2,radioButton3,radioButton4,radioButton5,radioButton6,radioButton7;
+    private TextView textView1,textView2,textView3,textView4;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,19 @@ public class HungerHeroSignUpActivity extends AppCompatActivity implements View.
         checkBox3 = findViewById(R.id.checkBox3);
         checkBox4 = findViewById(R.id.checkBox4);
 
+        radioButton1 = findViewById(R.id.radioButton1);
+        radioButton2 = findViewById(R.id.radioButton2);
+        radioButton3 = findViewById(R.id.radioButton3);
+        radioButton4 = findViewById(R.id.radioButton4);
+        radioButton5 = findViewById(R.id.radioButton5);
+        radioButton6 = findViewById(R.id.radioButton6);
+        radioButton7 = findViewById(R.id.radioButton7);
+
+        textView1 = findViewById(R.id.textView1);
+        textView2 = findViewById(R.id.textView2);
+        textView3 = findViewById(R.id.textView3);
+        textView4 = findViewById(R.id.textView4);
+
         ArrayAdapter spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.india_states, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
@@ -94,6 +112,8 @@ public class HungerHeroSignUpActivity extends AppCompatActivity implements View.
     @Override
     protected void onResume() {
         super.onResume();
+
+        attachListeners();
 
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
@@ -113,7 +133,7 @@ public class HungerHeroSignUpActivity extends AppCompatActivity implements View.
                 mProgressDialog.cancel();
 
                 token = forceResendingToken;
-                Intent intent = new Intent(HungerHeroSignUpActivity.this,VerificationActivity.class);
+                intent = new Intent(HungerHeroSignUpActivity.this,VerificationActivity.class);
                 intent.putExtra("userName",userName);
                 intent.putExtra("userEmail",userEmail);
                 intent.putExtra("userPassword",userPassword);
@@ -133,62 +153,6 @@ public class HungerHeroSignUpActivity extends AppCompatActivity implements View.
 
         };
 
-        checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    if(!introducedToFIThrough.contains("Facebook"))
-                        introducedToFIThrough.add("Facebook");
-                }
-                else
-                if(introducedToFIThrough.contains("Facebook"))
-                    introducedToFIThrough.remove("Facebook");
-
-            }
-        });
-
-        checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    if(!introducedToFIThrough.contains("Website"))
-                        introducedToFIThrough.add("Website");
-                }
-                else
-                if(introducedToFIThrough.contains("Website"))
-                    introducedToFIThrough.remove("Website");
-
-            }
-        });
-
-        checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    if(!introducedToFIThrough.contains("Media/News"))
-                        introducedToFIThrough.add("Media/News");
-                }
-                else
-                if(introducedToFIThrough.contains("Media/News"))
-                    introducedToFIThrough.remove("Media/News");
-
-            }
-        });
-
-        checkBox4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    if(!introducedToFIThrough.contains("Through a Friend"))
-                        introducedToFIThrough.add("Through a Friend");
-                }
-                else
-                if(introducedToFIThrough.contains("Through a Friend"))
-                    introducedToFIThrough.remove("Through a Friend");
-
-            }
-        });
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -202,6 +166,26 @@ public class HungerHeroSignUpActivity extends AppCompatActivity implements View.
 
             }
         });
+
+    }
+
+    private void attachListeners(){
+
+        checkBox1.setOnCheckedChangeListener(this);
+        checkBox2.setOnCheckedChangeListener(this);
+        checkBox3.setOnCheckedChangeListener(this);
+        checkBox4.setOnCheckedChangeListener(this);
+        radioButton1.setOnClickListener(this);
+        radioButton2.setOnClickListener(this);
+        radioButton3.setOnClickListener(this);
+        radioButton4.setOnClickListener(this);
+        radioButton5.setOnClickListener(this);
+        radioButton6.setOnClickListener(this);
+        radioButton7.setOnClickListener(this);
+        textView1.setOnClickListener(this);
+        textView2.setOnClickListener(this);
+        textView3.setOnClickListener(this);
+        textView4.setOnClickListener(this);
 
     }
 
@@ -240,8 +224,8 @@ public class HungerHeroSignUpActivity extends AppCompatActivity implements View.
         ArrayList<String> aboutMeList = new ArrayList<>();
 
         if(userName.isEmpty() || userEmail.isEmpty() || userPassword.isEmpty() || userMobileNumber.isEmpty() ||
-           userDoB.equals("empty") || educationalBackground.isEmpty() || currentlyPartOf.isEmpty() || city.isEmpty() ||
-           locality.isEmpty() || pinCode.isEmpty() || reasonForJoining.isEmpty() || !(aboutMe.length>0) || !(introducedToFIThrough.size()>0))
+                userDoB.equals("empty") || educationalBackground.isEmpty() || currentlyPartOf.isEmpty() || city.isEmpty() ||
+                locality.isEmpty() || pinCode.isEmpty() || reasonForJoining.isEmpty() || !(aboutMe.length>0) || !(introducedToFIThrough.size()>0))
             makeToast("Fields cannot be empty!");
 
         else if(userPassword.length()<6)
@@ -285,6 +269,22 @@ public class HungerHeroSignUpActivity extends AppCompatActivity implements View.
 
         switch (view.getId()){
 
+            case R.id.textView1:
+                openBrowser("https://www.google.com");
+                break;
+
+            case R.id.textView2:
+                openBrowser("https://www.facebook.com");
+                break;
+
+            case R.id.textView3:
+                openBrowser("https://www.google.com");
+                break;
+
+            case R.id.textView4:
+                openBrowser("https://www.facebook.com");
+                break;
+
             case R.id.radioButton1 :
                 affordableTime = "3-6 hours";
                 break;
@@ -315,4 +315,48 @@ public class HungerHeroSignUpActivity extends AppCompatActivity implements View.
         }
 
     }
+
+    private void openBrowser(String url){
+
+        intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+
+        switch (compoundButton.getId()){
+
+            case R.id.checkBox1 :
+                addOrRemove("Facebook",checked);
+                break;
+
+            case R.id.checkBox2 :
+                addOrRemove("Website",checked);
+                break;
+
+            case R.id.checkBox3 :
+                addOrRemove("Media/News",checked);
+                break;
+
+            case R.id.checkBox4 :
+                addOrRemove("Through a Friend",checked);
+                break;
+
+        }
+    }
+
+    private void addOrRemove(String s,boolean checked){
+
+        if(checked){
+            if(!introducedToFIThrough.contains(s))
+                introducedToFIThrough.add(s);
+        }
+        else
+        if(introducedToFIThrough.contains(s))
+            introducedToFIThrough.remove(s);
+
+    }
+
 }

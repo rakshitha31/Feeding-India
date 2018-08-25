@@ -20,14 +20,13 @@
             android:textSize="30sp"
             android:textColor="@color/stratos"
             android:textAlignment="center"
-            android:layout_margin="@dimen/margin_five_dp"
-            android:background="@drawable/edit_text_border"/>
+            android:layout_margin="@dimen/margin_five_dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/name"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -47,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dob"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -68,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/email"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -88,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/required_password"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -108,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/mobile_number"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -129,7 +128,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/educational_background"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="#882222"
             android:textAlignment="viewStart"
             android:layout_margin="5dp" />
@@ -149,7 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/currently_part_of"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -169,7 +168,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/state"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -186,7 +185,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/city"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -206,7 +205,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/locality"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -226,7 +225,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/pin_code"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -247,7 +246,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/reason_for_joining"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -267,7 +266,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/responsibility"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -280,7 +279,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/hunger_hero_description"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="@color/solidBlue"
                 android:id="@+id/radioButton4"
                 android:checked="true"/>
@@ -289,16 +288,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
-                android:text="https://www.google.com"
-                android:textSize="20sp"
-                android:textColorLink="@color/purple"
+                android:text="@string/read_more"
+                android:id="@+id/textView1"
+                android:textSize="18sp"
                 android:layout_marginStart="@dimen/margin_thirty_dp" />
 
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/superhero_description"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="@color/solidBlue"
                 android:id="@+id/radioButton5"/>
 
@@ -306,9 +305,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
-                android:text="https://www.google.com"
-                android:textSize="20sp"
-                android:textColorLink="@color/purple"
+                android:text="@string/read_more"
+                android:id="@+id/textView2"
+                android:textSize="18sp"
                 android:layout_marginStart="@dimen/margin_thirty_dp" />
 
         </RadioGroup>
@@ -317,7 +316,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/affordable_time"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -331,7 +330,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/time1"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="@color/solidBlue"
                 android:id="@+id/radioButton1"
                 android:checked="true"/>
@@ -340,7 +339,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/time2"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="@color/solidBlue"
                 android:id="@+id/radioButton2"/>
 
@@ -348,7 +347,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/time3"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="@color/solidBlue"
                 android:id="@+id/radioButton3"/>
 
@@ -356,7 +355,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/time4"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="@color/solidBlue"
                 android:id="@+id/radioButton6"/>
 
@@ -364,7 +363,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/time5"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="@color/solidBlue"
                 android:id="@+id/radioButton7"/>
 
@@ -374,7 +373,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/about_me"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -383,7 +382,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/separate"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textColor="@color/solidBlue"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -403,7 +402,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/introduced_through"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -412,7 +411,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/facebook_page"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/solidBlue"
             android:id="@+id/checkBox1" />
 
@@ -420,16 +419,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="web"
-            android:text="https://www.google.com"
-            android:textSize="20sp"
-            android:textColorLink="@color/purple"
+            android:text="@string/link"
+            android:id="@+id/textView3"
+            android:textSize="18sp"
+            android:layout_marginTop="0dp"
             android:layout_marginStart="@dimen/margin_thirty_dp" />
 
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/website"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/solidBlue"
             android:id="@+id/checkBox2" />
 
@@ -437,16 +437,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:autoLink="web"
-            android:text="https://www.google.com"
-            android:textSize="20sp"
-            android:textColorLink="@color/purple"
+            android:text="@string/link"
+            android:id="@+id/textView4"
+            android:textSize="18sp"
+            android:layout_marginTop="0dp"
             android:layout_marginStart="@dimen/margin_thirty_dp" />
 
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/media"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/solidBlue"
             android:id="@+id/checkBox3" />
 
@@ -454,7 +455,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/friend"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/solidBlue"
             android:id="@+id/checkBox4" />
 

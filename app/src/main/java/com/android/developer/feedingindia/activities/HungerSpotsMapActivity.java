@@ -1,69 +1,32 @@
 package com.android.developer.feedingindia.activities;
 
-import android.*;
-import android.R.layout;
 import android.Manifest;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.inputmethodservice.Keyboard;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.provider.Telephony;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.developer.feedingindia.R;
 import com.android.developer.feedingindia.pojos.DonationDetails;
 import com.android.developer.feedingindia.pojos.HungerSpot;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.AutocompletePrediction;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -75,26 +38,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import com.android.developer.feedingindia.R;
-
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-
-public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.OnConnectionFailedListener {
-
-
+public class HungerSpotsMapActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "MapActivity";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -114,7 +63,7 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
     public List<Marker> markerList= new ArrayList<>();
 
     //Firebase
-    private DatabaseReference donorSpotDatabaseReference;
+    private DatabaseReference hungerSpotDatabaseReference;
     private ArrayList<HungerSpot> hungerSpots;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -127,9 +76,9 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.feed_map_activity);
+        setContentView(R.layout.activity_hungerspots);
         firebaseDatabase = FirebaseDatabase.getInstance();
-        donorSpotDatabaseReference = firebaseDatabase.getInstance().getReference().child("Donations");
+        hungerSpotDatabaseReference = firebaseDatabase.getInstance().getReference().child("Hungerspots");
 
         getLocationPermission();
 
@@ -161,10 +110,7 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
                 @Override
                 public boolean onMarkerClick(Marker marker) {
 
-                    if(marker!=null){
-                        Intent intent = new Intent(FeedMapActivity.this,DonordetailsPopUpActivity.class);
-                        startActivity(intent);
-                    }
+                    //Write code for on click of Hunger Spot-Dialog Box to accept or decline
                     return false;
                 }
             });
@@ -178,11 +124,8 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
 
         }
 
-
-
-        //Remove the child event for this and add DonationDetails Hashmap
-        //ADD GETTING MARKER LAT LNG PART HERE
-        donorSpotDatabaseReference.addChildEventListener(new ChildEventListener() {
+        //Adding marker at hunger spots
+        hungerSpotDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 LatLng newLocation = new LatLng(
@@ -255,7 +198,7 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
                                     DEFAULT_ZOOM,"My Location");
 
                         }else{
-                            Toast.makeText(FeedMapActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HungerSpotsMapActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -265,31 +208,19 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
-    //Adding marker at user location
+    //Focusing at user location
     private void moveCamera(LatLng latLng, float zoom, String title){
-        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-
-        MarkerOptions options = new MarkerOptions()
-                .position(latLng)
-                .title(title);
-
-        mMap.addMarker(options)
-        .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-
-        hideSoftKeyboard();
 
     }
 
     private void initMap(){
-        Log.d(TAG, "initMap: initializing map");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.feedmap);
 
-        mapFragment.getMapAsync(FeedMapActivity.this);
+        mapFragment.getMapAsync(HungerSpotsMapActivity.this);
     }
 
     private void getLocationPermission(){
-        Log.d(TAG, "getLocationPermission: getting location permissions");
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION};
 
@@ -328,7 +259,7 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
                     }
                     Log.d(TAG, "onRequestPermissionsResult: permission granted");
                     mLocationPermissionsGranted = true;
-                    //initialize our map
+                    //initialize map
                     initMap();
                 }
             }
@@ -337,5 +268,4 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
     private void hideSoftKeyboard(){
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
-
 }

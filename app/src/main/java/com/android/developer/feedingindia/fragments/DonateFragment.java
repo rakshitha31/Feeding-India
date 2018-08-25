@@ -31,13 +31,13 @@ import java.util.HashMap;
 public class DonateFragment extends Fragment  {
 
     private EditText foodDescriptionEditText,foodPreparedOnEditText,additionalContactNumberEditText,cityEditText,
-                     localityEditText,pinCodeEditText;
+            addressEditText,pinCodeEditText;
     private boolean hasContainer;
     public static double latitude,longitude;
     public static boolean locationChosenOnMap;
-    private String state,city,locality,pinCode,foodDescription,foodPreparedOn,additionalContactNumber;
+    private String state,city,donorAddress,pinCode,foodDescription,foodPreparedOn,additionalContactNumber;
     private SharedPreferences mSharedPreferences;
-    private HashMap<String,String> address;
+    private HashMap<String,Object> address;
     private Spinner spinner;
     private ArrayAdapter spinnerAdapter;
     private RadioButton hasContainerYesRadioButton,hasContainerNoRadioButton;
@@ -65,9 +65,9 @@ public class DonateFragment extends Fragment  {
         spinnerAdapter = ArrayAdapter.createFromResource(mContext, R.array.india_states, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
 
-        mSharedPreferences = getActivity().getSharedPreferences("com.example.navada.feedingindia",Context.MODE_PRIVATE);
+        mSharedPreferences = getActivity().getSharedPreferences("com.android.developer.feedingindia",Context.MODE_PRIVATE);
 
-        state = locality = pinCode = city = "";
+        state = donorAddress = pinCode = city = "";
         hasContainer = locationChosenOnMap = false;
         address = new HashMap<>();
     }
@@ -80,7 +80,7 @@ public class DonateFragment extends Fragment  {
         foodDescriptionEditText = view.findViewById(R.id.foodDescriptionEditText);
         foodPreparedOnEditText = view.findViewById(R.id.foodPreparedOnEditText);
         cityEditText = view.findViewById(R.id.cityEditText);
-        localityEditText = view.findViewById(R.id.localityEditText);
+        addressEditText = view.findViewById(R.id.addressEditText);
         pinCodeEditText = view.findViewById(R.id.pinCodeEditText);
         spinner = view.findViewById(R.id.spinner);
         locationButton = view.findViewById(R.id.locationButton);
@@ -160,32 +160,34 @@ public class DonateFragment extends Fragment  {
         changed if location is retrieved on the map
          */
 
-        if (foodDescription.isEmpty() || foodPreparedOn.isEmpty())
+        if (foodDescription.isEmpty() || foodPreparedOn.isEmpty()) {
             makeToast("Fields marked with * cannot be empty!");
+            return;
+        }
         else if (!locationChosenOnMap) {
             city = cityEditText.getText().toString().trim();
-            locality = localityEditText.getText().toString().trim();
+            donorAddress = addressEditText.getText().toString().trim();
             pinCode = pinCodeEditText.getText().toString().trim();
         }
-            if (pinCode.isEmpty() || city.isEmpty() || locality.isEmpty())
-                makeToast("Enter full address or locate on the map");
-            else {
-                if (additionalContactNumber.isEmpty())
-                    additionalContactNumber = null;
+        if (pinCode.isEmpty() || city.isEmpty() || donorAddress.isEmpty())
+            makeToast("Enter full address or locate on the map");
+        else {
+            if (additionalContactNumber.isEmpty())
+                additionalContactNumber = null;
 
-                address.put("city", city);
-                address.put("state", state);
-                address.put("locality", locality);
-                address.put("pinCode", pinCode);
+            address.put("city", city);
+            address.put("state", state);
+            address.put("address", donorAddress);
+            address.put("pinCode", pinCode);
 
-                if (locationChosenOnMap) {
-                    address.put("latitude", Double.toString(latitude));
-                    address.put("longitude", Double.toString(longitude));
-                }
-
-                askIfUserCanDonate();
-
+            if (locationChosenOnMap) {
+                address.put("latitude", Double.toString(latitude));
+                address.put("longitude", Double.toString(longitude));
             }
+
+            askIfUserCanDonate();
+
+        }
     }
 
     private void askIfUserCanDonate(){
@@ -202,11 +204,7 @@ public class DonateFragment extends Fragment  {
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        DonationDetails donationDetails = new DonationDetails(foodDescription,foodPreparedOn,
-                                                            additionalContactNumber,"done",mSharedPreferences.getString("mobileNumber",""),
-                                                            hasContainer,true,address);
-                        mDatabaseReference.push().setValue(donationDetails);
-                        reset();
+                        push(true,mSharedPreferences.getString("name",""));
                         //Show Hunger Spots
 
                     }
@@ -214,10 +212,7 @@ public class DonateFragment extends Fragment  {
                 .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        DonationDetails donationDetails = new DonationDetails(foodDescription,foodPreparedOn,
-                                additionalContactNumber,"pending",mSharedPreferences.getString("mobileNumber",""),
-                                hasContainer,false,address);
-                        mDatabaseReference.push().setValue(donationDetails);
+                        push(false,"none");
                         reset();
 
                     }
@@ -225,14 +220,24 @@ public class DonateFragment extends Fragment  {
 
     }
 
+    private void push(boolean canDonate, String deliverer ){
+
+        DonationDetails donationDetails = new DonationDetails(foodDescription,foodPreparedOn,
+                additionalContactNumber,"pending",mSharedPreferences.getString("mobileNumber",""),
+                hasContainer,canDonate,deliverer,address);
+        mDatabaseReference.push().setValue(donationDetails);
+        reset();
+
+    }
+
     private void reset(){
-        state = locality = pinCode = city = "";
+        donorAddress = pinCode = city = "";
         locationChosenOnMap = false;
         address.clear();
         foodDescriptionEditText.setText("");
         foodPreparedOnEditText.setText("");
         cityEditText.setText("");
-        localityEditText.setText("");
+        addressEditText.setText("");
         pinCodeEditText.setText("");
         additionalContactNumberEditText.setText("");
         hasContainerNoRadioButton.setChecked(true);

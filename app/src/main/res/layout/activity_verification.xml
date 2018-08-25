@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/verification_code"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />

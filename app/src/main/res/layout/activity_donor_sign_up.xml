@@ -15,14 +15,13 @@
             android:textSize="30sp"
             android:textColor="@color/stratos"
             android:textAlignment="center"
-            android:layout_margin="@dimen/margin_five_dp"
-            android:background="@drawable/edit_text_border"/>
+            android:layout_margin="@dimen/margin_five_dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/name"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -42,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/dob"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -63,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/email"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -83,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/required_password"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />
@@ -103,7 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/mobile_number"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/sienna"
             android:textAlignment="viewStart"
             android:layout_margin="@dimen/margin_five_dp" />

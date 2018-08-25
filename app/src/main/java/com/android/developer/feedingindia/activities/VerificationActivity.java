@@ -98,13 +98,13 @@ public class VerificationActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if(mCountDownTimer!=null)
-        mCountDownTimer.cancel();
+            mCountDownTimer.cancel();
     }
 
     private void startTimer(){
 
         if(mCountDownTimer!=null)
-        mCountDownTimer.cancel();
+            mCountDownTimer.cancel();
         mCountDownTimer = new CountDownTimer(61100, 1000) {
             @Override
             public void onTick(long l) {
@@ -170,7 +170,7 @@ public class VerificationActivity extends AppCompatActivity {
                         mProgressDialog.cancel();
                         verificationCodeEditText.setText("");
                         makeToast(task.getException().getMessage());
-                        }
+                    }
                 }
             });
         }
@@ -189,11 +189,11 @@ public class VerificationActivity extends AppCompatActivity {
                     if(callingActivity.equals("HungerHeroSignUpActivity")){
                         //User wants to be a hungerhero
                         HungerHero hungerHero = new HungerHero(userName,userDoB,userEmail,userPassword,userMobileNumber,
-                         "hungerhero",false,HungerHeroSignUpActivity.educationalBackground,HungerHeroSignUpActivity.state,
-                          HungerHeroSignUpActivity.city,HungerHeroSignUpActivity.locality,HungerHeroSignUpActivity.pinCode,
-                          HungerHeroSignUpActivity.reasonForJoining,HungerHeroSignUpActivity.affordableTime,
-                          HungerHeroSignUpActivity.responsibility,HungerHeroSignUpActivity.currentlyPartOf,
-                          HungerHeroSignUpActivity.introducedToFIThrough,HungerHeroSignUpActivity.aboutMeList);
+                                "hungerhero",false,HungerHeroSignUpActivity.educationalBackground,HungerHeroSignUpActivity.state,
+                                HungerHeroSignUpActivity.city,HungerHeroSignUpActivity.locality,HungerHeroSignUpActivity.pinCode,
+                                HungerHeroSignUpActivity.reasonForJoining,HungerHeroSignUpActivity.affordableTime,
+                                HungerHeroSignUpActivity.responsibility,HungerHeroSignUpActivity.currentlyPartOf,
+                                HungerHeroSignUpActivity.introducedToFIThrough,HungerHeroSignUpActivity.aboutMeList);
 
                         mDatabaseReference.child(mAuth.getCurrentUser().getUid()).setValue(hungerHero);
                     }
@@ -232,8 +232,8 @@ public class VerificationActivity extends AppCompatActivity {
         mSharedPreferences.edit().putString("userType",userType).apply();
         mProgressDialog.cancel();
         makeToast("Welcome to Feeding India!\n" +
-                  "A verification mail has been sent to you\n" +
-                  "Please verify your email before you sign in");
+                "A verification mail has been sent to you\n" +
+                "Please verify your email before you sign in");
         finish();
 
     }
