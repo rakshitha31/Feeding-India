@@ -1,6 +1,8 @@
 package com.android.developer.feedingindia.fragments;
 
+
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.android.developer.feedingindia.R;
+import com.android.developer.feedingindia.activities.FeedMapActivity;
+
 
 public class HomeFragment extends Fragment {
 
@@ -111,7 +115,8 @@ public class HomeFragment extends Fragment {
                     case MENU_ITEM_ID_TWO:
                         CURRENT_TAG = TAG_FEED;
                         navItemId = 2;
-                        loadFragment(new FeedFragment());
+                        Intent intent=new Intent(getActivity(),FeedMapActivity.class);
+                        startActivity(intent);
                         break;
 
                     case MENU_ITEM_ID_THREE:
