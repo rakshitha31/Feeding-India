@@ -157,40 +157,43 @@ public class FeedMapActivity extends AppCompatActivity implements OnMapReadyCall
 
         }
 
-        hungerSpotDatabaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-            /*    ObjectMapper myMapper = new ObjectMapper();
-                HashMap<String, HashMap<String, HungerSpot>> myList = (HashMap<String, HashMap<String, HungerSpot>>) dataSnapshot.getValue();
-                Collection<HashMap<String, HungerSpot>> values = myList.values();
-                for (HashMap<String, HungerSpot> instance : values) {
-                    HungerSpot donationDetails = myMapper.convertValue(instance, HungerSpot.class);
-                    Log.e(String.valueOf(donationDetails), "onDataChange: locations"); */
-              DataSnapshot mylocation = dataSnapshot.child("Hungerspot");
-              Iterable<DataSnapshot> lat = mylocation.getChildren();
-              ArrayList<HungerSpot> mylat = new ArrayList<>();
-              for( DataSnapshot location:lat )
-              {
-                  HungerSpot h = location.getValue(HungerSpot.class);
-                  Log.e(String.valueOf(h.getLatitude()), "onDataChange: locations" );
-              }
-
-                }
-
+        hungerSpotDatabaseReference.addChildEventListener(new ChildEventListener() {
 
             @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                LatLng newLocation = new LatLng(
+                        dataSnapshot.child("latitude").getValue(Long.class),
+                        dataSnapshot.child("longitude").getValue(Long.class)
+                );
+                mMap.addMarker(new MarkerOptions()
+                        .position(newLocation)
+                        .title(dataSnapshot.getKey()));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
-
-
-
     }
+
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
